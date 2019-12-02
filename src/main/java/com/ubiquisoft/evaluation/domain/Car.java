@@ -3,6 +3,7 @@ package com.ubiquisoft.evaluation.domain;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +31,31 @@ public class Car {
 		 *          "TIRE": 3
 		 *      }
 		 */
-
-		return null;
+		Map<PartType, Integer> missingParts = populateMapOfAllParts();
+		for (Part part : parts) {
+			PartType partType = part.getType();
+		    if (missingParts.containsKey(partType) && partType.equals(PartType.TIRE)) {
+		    	if (missingParts.get(partType) == 1) {
+		    		missingParts.remove(partType);
+				} else {
+		    		missingParts.put(partType, missingParts.get(partType) - 1);
+				}
+			} else {
+				missingParts.remove(partType);
+			}
+		}
+		return missingParts;
+	}
+	private Map<PartType, Integer> populateMapOfAllParts() {
+		Map<PartType, Integer> partTypeMap = new HashMap<>();
+		for (PartType type : PartType.values()) {
+			if (type.equals(PartType.TIRE)) {
+				partTypeMap.put(type, 4);
+			} else {
+				partTypeMap.put(type, 1);
+			}
+		}
+		return partTypeMap;
 	}
 
 	@Override

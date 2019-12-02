@@ -16,6 +16,7 @@ public class Part {
 
 
 	public boolean isInWorkingCondition() {
+		//TODO: add USED if it's determined to be a valid working condition.  Instructions say it isn't.
 		switch (this.condition) {
 			case NEW:
 			case GOOD:
