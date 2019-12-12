@@ -14,6 +14,8 @@ public class Car {
 	private String year;
 	private String make;
 	private String model;
+	private final static int NUMBER_OF_TIRES_REQUIRED = 4;
+	private final static int DEFAULT_PARTS_REQUIRED = 1;
 
 	private List<Part> parts;
 
@@ -34,14 +36,12 @@ public class Car {
 		Map<PartType, Integer> missingParts = populateMapOfAllParts();
 		for (Part part : parts) {
 			PartType partType = part.getType();
-		    if (missingParts.containsKey(partType) && partType.equals(PartType.TIRE)) {
+		    if (missingParts.containsKey(partType)) {
 		    	if (missingParts.get(partType) == 1) {
 		    		missingParts.remove(partType);
 				} else {
 		    		missingParts.put(partType, missingParts.get(partType) - 1);
 				}
-			} else {
-				missingParts.remove(partType);
 			}
 		}
 		return missingParts;
@@ -50,14 +50,23 @@ public class Car {
 		Map<PartType, Integer> partTypeMap = new HashMap<>();
 		for (PartType type : PartType.values()) {
 			if (type.equals(PartType.TIRE)) {
-				partTypeMap.put(type, 4);
+				partTypeMap.put(type, NUMBER_OF_TIRES_REQUIRED);
 			} else {
-				partTypeMap.put(type, 1);
+				partTypeMap.put(type, DEFAULT_PARTS_REQUIRED);
 			}
 		}
 		return partTypeMap;
 	}
 
+	public boolean isMissingRequiredFields() {
+		return getYear() != null && !getYear().equals("") && getMake() != null && !getMake().equals("") &&
+				getModel() != null && !getModel().equals("");
+	}
+
+	public void printFieldErrorMessage() {
+		System.out.println(String.format("Car is missing year [%s], make [%s] or model [%s].", getYear(), getMake(),
+				getModel()));
+	}
 	@Override
 	public String toString() {
 		return "Car{" +

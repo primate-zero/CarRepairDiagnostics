@@ -39,16 +39,16 @@ public class CarDiagnosticEngine {
 		 * Treat the console as information being read by a user of this application. Attempts should be made to ensure
 		 * console output is as least as informative as the provided methods.
 		 */
-		if (car.getYear() == null || car.getYear().equals("") || car.getMake() == null || car.getMake().equals("") || car.getModel() == null || car.getModel().equals("")) {
-			System.out.println(String.format("Car is missing year [%s], make [%s] or model [%s].", car.getYear(), car.getMake(), car.getModel()));
+		if (car.isMissingRequiredFields()) {
+			car.printFieldErrorMessage();
 			return;
 		}
 		boolean endDiagnostics = false;
 		Map<PartType, Integer> missingParts = car.getMissingPartsMap();
 		if (!missingParts.isEmpty()) {
+			endDiagnostics = true;
 			for (PartType carPart : missingParts.keySet()) {
 				printMissingPart(carPart, missingParts.get(carPart));
-				endDiagnostics = true;
 			}
 		}
 		if (endDiagnostics) {
